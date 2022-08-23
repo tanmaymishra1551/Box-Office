@@ -11,7 +11,7 @@ const ShowGrid =({data}) => {
       key={show.id} 
       id={show.id} 
       name={show.name} 
-      image={show.image ? show.medium: IMAGE_NOT_FOUND}  
+      image={show.image ? show.image.medium: IMAGE_NOT_FOUND}  
       summary={show.summary}/>)
     }
   </FlexGrid>

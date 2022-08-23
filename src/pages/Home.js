@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ActorGrid from '../components/actor/ActorGrid';
 import ShowGrid from '../components/show/ShowGrid';
 import MainPageLayout from '../components/MainPageLayout';
@@ -11,6 +10,14 @@ const Home = () => {
     const [searchOption, setSearchOption] = useState('shows');
 
     const isShowSearch = searchOption === 'shows';
+
+    useEffect(() => {
+        console.log('use effect run')
+
+        return () =>{
+            console.log('exit')
+        }
+    }, [searchOption])
 
     const onSearch = () => {
         apiGet(`/search/${searchOption}?q=${input}`).then(result => {
@@ -34,7 +41,7 @@ const Home = () => {
         setSearchOption(ev.target.value);
     }
 
-    console.log(searchOption)
+    // console.log(searchOption)
 
     const renderResults = () => {
         if (results && results.length === 0) {
@@ -56,7 +63,7 @@ const Home = () => {
             </label>
             <label htmlFor="actors-search">
                 Actors
-                <input type="radio" id="actors-search" value="actors" onChange={onRadioChange} checked={!isShowSearch} />
+                <input type="radio" id="actors-search" value="people" onChange={onRadioChange} checked={!isShowSearch} />
             </label>
         </div>
         <button type='button' onClick={onSearch} >Search</button>
