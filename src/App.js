@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import Home from "./pages/Home";
 import Show from "./pages/Show";
-import About from "./pages/Starred";
+import Starred from "./pages/Starred";
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route exact path="/about">
-          <About />
+        <Route exact path="/starred">
+          <Starred />
         </Route>
         <Route exact path="/show/:id">
           <Show />
