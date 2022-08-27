@@ -4,6 +4,9 @@ import ShowGrid from '../components/show/ShowGrid';
 import MainPageLayout from '../components/MainPageLayout';
 import { apiGet } from '../components/misc/config'
 import { useLastQuery } from '../components/misc/custom-hooks';
+import { SearchButtonWrapper, SearchInput } from './Home.styled';
+import { RadioInputsWrapper } from './Home.styled';
+import CustomRadio from '../components/CustomRadio';
 
 const Home = () => {
     const [input, setInput] = useLastQuery('');
@@ -15,7 +18,7 @@ const Home = () => {
     useEffect(() => {
         console.log('use effect run')
 
-        return () =>{
+        return () => {
             console.log('exit')
         }
     }, [searchOption])
@@ -56,18 +59,29 @@ const Home = () => {
 
 
     return <MainPageLayout>
-        <input type="text" onChange={onInputChange} onKeyDown={onKeyDown} value={input} placeholder="Search for something" />
-        <div>
-            <label htmlFor="shows-search">
-                Shows
-                <input type="radio" id="shows-search" value="shows" onChange={onRadioChange} checked={isShowSearch} />
-            </label>
-            <label htmlFor="actors-search">
-                Actors
-                <input type="radio" id="actors-search" value="people" onChange={onRadioChange} checked={!isShowSearch} />
-            </label>
-        </div>
-        <button type='button' onClick={onSearch} >Search</button>
+        <SearchInput type="text" onChange={onInputChange} onKeyDown={onKeyDown} value={input} placeholder="Search for something" />
+        <RadioInputsWrapper>
+            <div>
+               <CustomRadio
+               label="Shows"
+               id="shows-search" 
+               value="shows" 
+               checked={isShowSearch}
+               onChange={onRadioChange}
+               />
+            </div>
+            <div>
+               <CustomRadio
+               label="Actors"
+               id="actors-search" 
+               value="people" 
+               checked={!isShowSearch}
+               onChange={onRadioChange}
+               />
+            </div>
+        </RadioInputsWrapper>
+        <SearchButtonWrapper>
+        <button type='button' onClick={onSearch} >Search</button></SearchButtonWrapper>
         {renderResults()}
     </MainPageLayout>
 

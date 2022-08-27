@@ -1,8 +1,8 @@
 // import React, { useEffect, useReducer } from 'react'
-import React from 'react'
 // import { useState } from 'react';
-import { useParams } from 'react-router-dom'
 // import { apiGet } from '../components/misc/config';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import Details from '../components/show/Details';
 import Seasons from '../components/show/Seasons';
 import Cast from '../components/show/Cast';
