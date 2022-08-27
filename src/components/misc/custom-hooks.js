@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useReducer } from 'react';
+import { apiGet } from './config';
 
 function showsReducer(prevState, action) {
 
@@ -35,4 +36,75 @@ function usePersistedReducer(reducer, initialState, key) {
 
 export function useShows(key = 'shows') {
     return usePersistedReducer(showsReducer, [], key)
+}
+
+
+export function useLastQuery(key ='lastQuery'){
+
+    const [input, setInput] = useState(()=>{
+        const persisted = sessionStorage.getItem(key);
+
+        return persisted ? JSON.parse(persisted) : 
+        '';
+    });
+    const setPersistedInput = newState => {
+        setInput(newState);
+        sessionStorage.setItem(key, JSON.stringify(newState));
+    };
+    return [input, setPersistedInput];
+}
+const reducer = (prevState, action) => {
+    switch (action.type) {
+        case 'FETCH_SUCCESS': {
+            return { error: null, isLoading: false, show: action.show }
+        }
+        case 'FETCH_FAILED': {
+            return { ...prevState, isLoading: false, error: action.error }
+        }
+        default: return prevState;
+    }
+}
+
+export function useShow(showId){
+    const [ state , dispatch] = useReducer(reducer,  {
+        show: null,
+        isLoading: true,
+        error: null,
+    });
+
+    // const [show, setShow] = useState(null);
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [error, setError] = useState(null);
+
+    useEffect(() => {
+
+        let isMounted = true;
+
+        apiGet(`/shows/${showId}?embed[]=seasons&embed[]=cast`)
+            .then(results => {
+                // setTimeout(() => {
+                if (isMounted) {
+                    dispatch({ type: 'FETCH_SUCCESS', show: results })
+                    // setShow(results)
+                    // setIsLoading(false)
+                }
+                // }, 2000);
+            })
+            .catch(err => {
+                if (isMounted) {
+
+                    dispatch({ type: 'FETCH_FAILED', error: err.message })
+
+                    // setError(err.message);
+                    // setIsLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+
+    }, [showId])
+    // console.log('show', show);
+    return state;
 }
