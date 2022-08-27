@@ -5,15 +5,17 @@ function showsReducer(prevState, action) {
 
 
     switch (action.type) {
-        case 'ADD':{
+        case 'ADD': {
             return [...prevState, action.showId]
         }
 
-        case 'REMOVE':{
-            return prevState.filter((showId)=> showId !== action.showId)
+        case 'REMOVE': {
+            return prevState.filter((showId) => showId !== action.showId)
         }
-
+        default:
+            return prevState;
     }
+
 }
 
 
